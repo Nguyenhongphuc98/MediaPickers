@@ -67,42 +67,58 @@ class MPPhotoLib: NSObject {
     public func fetchCollection(type: PHAssetCollectionType, subtype: PHAssetCollectionSubtype) -> SignalProducer<MPAssetCollection, Never> {
         
         return SignalProducer { (observer, lifetime) in
-            var assetCollection: [PHAssetCollection] = []
-                   let config = MPPhotoConfig()
-                   let options = self.generateCollectionOption(config: config)
-                   
-                   let collections = PHAssetCollection.fetchAssetCollections(with: type, subtype: subtype, options: options)
-                   
-                   collections.enumerateObjects { (collection, index, _) in
-                       assetCollection.append(collection)
-                   }
-                   
-            let collectionResult = MPAssetCollection(assetCollection: collections.firstObject!)
-            observer.send(value: collectionResult)
-            observer.sendCompleted()
+            DispatchQueue.global(qos: .background)
+                .async {
+                    let config = MPPhotoConfig()
+                    let options = self.generateCollectionOption(config: config)
+                    
+                    let collections = PHAssetCollection.fetchAssetCollections(with: type, subtype: subtype, options: options)
+                    
+                    let collectionResult = MPAssetCollection(assetCollection: collections.firstObject!)
+                    observer.send(value: collectionResult)
+                    observer.sendCompleted()
+            }
         }
     }
     
-    //fetch tat ca collection
-    public func fetchCollection() -> SignalProducer<MPAssetCollection, Never> {
+
+    public func fetchSmartAlbums(subtypes s: [PHAssetCollectionSubtype]?) -> SignalProducer<[MPAssetCollection], Never> {
         
         return SignalProducer { (observer, lifetime) in
-            var assetCollection: [PHAssetCollection] = []
-                   let config = MPPhotoConfig()
-                   let options = self.generateCollectionOption(config: config)
-                   
-            let collections = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumFavorites, options: options)
-                   
-                   collections.enumerateObjects { (collection, index, _) in
-                       assetCollection.append(collection)
-                   }
-                   
-            //xu ly tat ca collection fetch dc va them vao neu có asset trong coll do
-                   for collection in assetCollection {
-                    print(collection.localizedTitle)
-                    self.fetchResult = PHAsset.fetchAssets(in: collection, options: self.generateAssetOption(config: config))
-                    print(self.fetchResult)
-                   }
+            DispatchQueue.global(qos: .background)
+                .async {
+                    var subtypes = s
+                    if subtypes == nil {
+                        subtypes = [.any]
+                    }
+                    
+                    var assetCollection: [PHAssetCollection] = []
+                    var assetCollectionResult: [MPAssetCollection] = []
+                    
+                    let config = MPPhotoConfig()
+                    let options = self.generateCollectionOption(config: config)
+                    
+                    for subtype in subtypes! {
+                        let collections = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: subtype, options: options)
+                        
+                        assetCollection.removeAll()
+                        collections.enumerateObjects { (collection, index, _) in
+                            assetCollection.append(collection)
+                        }
+                        
+                        //neu subtype = .any thi se co nhieu collection
+                        for collect in assetCollection {
+                            let collectionResult = MPAssetCollection(assetCollection: collect)
+                            if collectionResult.numberOfAssets != 0 && !assetCollectionResult.contains(collectionResult) {
+                                assetCollectionResult.append(collectionResult)
+                            }
+                        }
+                        
+                    }
+                    
+                    observer.send(value: assetCollectionResult)
+                    observer.sendCompleted()
+            }
         }
     }
     
@@ -123,7 +139,7 @@ class MPPhotoLib: NSObject {
                 
                 //hoàn thành nếu ảnh != ảnh chất lượng thấp
                 let complete = (info?["PHImageResultIsDegradedKey"] as? Bool) == false
-                print("request\(info?["PHImageResultRequestIDKey"]) complete with \(complete)")
+                print("request \(String(describing: info?["PHImageResultRequestIDKey"])) is low quality \(!complete)")
                 if let image = image {
                     observer.send(value: (image, nil))
                 }

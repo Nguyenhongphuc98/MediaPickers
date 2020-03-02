@@ -12,7 +12,12 @@ import ReactiveSwift
 class PickerViewController: UIViewController {
     
     var collectionView: PickerCollectionView?
+    
+    var mpCollections: [MPAssetCollection]!
+    
     var focusedCollection: MPAssetCollection?
+    
+    var albumsButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,16 +30,27 @@ class PickerViewController: UIViewController {
     func testPhotoLib() {
         MPPhotoLib.sharedInstance
             .checkAuthorization()
+            .observe(on: UIScheduler())
             .start(Signal<AuthorizationResult, Never>.Observer(value: { (status) in
+                
                 switch status {
                 case .authorized:
                     MPPhotoLib.sharedInstance
                         .fetchCollection(type: .smartAlbum, subtype: .smartAlbumUserLibrary)
-                        .start(Signal<MPAssetCollection, Never>.Observer(value: { (collection) in
+                        .observe(on: UIScheduler())
+                        .start(Signal<MPAssetCollection, Never>.Observer(value: { [unowned self] (collection) in
+                            
                             self.focus(collection: collection)
+                            
+                            MPPhotoLib.sharedInstance
+                                .fetchSmartAlbums(subtypes: nil)
+                                .observe(on: UIScheduler())
+                                .start(Signal<[MPAssetCollection], Never>.Observer(value: { [unowned self] (albums) in
+                                    self.mpCollections = albums
+                                }))
                         }))
                     
-                   
+                    
                 default:
                     print("don't have permission")
                 }
@@ -46,6 +62,18 @@ class PickerViewController: UIViewController {
 
     func setUpUI() {
         self.view.backgroundColor = .gray
+        
+        albumsButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20))
+        albumsButton.setTitle("Albums", for: .normal)
+        albumsButton.setTitleColor(.blue, for: .normal)
+        albumsButton.setTitleColor(.green, for: .highlighted)
+        albumsButton.addTarget(self, action: #selector(albumsButtonDidClick), for: .touchUpInside)
+        
+        let leftBarButtonItem = UIBarButtonItem()
+        leftBarButtonItem.customView = albumsButton
+        navigationItem.leftBarButtonItem = leftBarButtonItem
+        view.addSubview(albumsButton)
+        
         collectionView = PickerCollectionView(frame: self.view.frame)
         collectionView?.dataSource = self
         self.view.addSubview(collectionView!)
@@ -53,7 +81,32 @@ class PickerViewController: UIViewController {
     
     func focus(collection: MPAssetCollection) {
         self.focusedCollection = collection
+        navigationItem.title = collection.collectionName
         collectionView?.reloadCollectionView()
+        
+    }
+    
+    @objc func albumsButtonDidClick() {
+        
+        //cancel image all requets
+        
+        let albumVC = AlbumsViewController()
+        albumVC.albums = mpCollections
+        if let focused = focusedCollection {
+            albumVC.focusIndex.value = mpCollections.firstIndex(where: { (collect) -> Bool in
+                collect.isEqual(focused)
+            })!
+        }
+        print(albumVC.focusIndex.value)
+        albumVC.focusIndex
+            .signal
+            .observe(Signal<Int, Never>.Observer(value: { [unowned self] (index) in
+                self.focus(collection: self.mpCollections![index])
+                print("change index to: \(index)")
+            }))
+        
+        modalPresentationStyle = UIModalPresentationStyle.popover
+        present(albumVC, animated: true, completion: {print("present complete")})
     }
 }
 

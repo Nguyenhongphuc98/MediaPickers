@@ -24,9 +24,9 @@ class PickerCollectionView: UIView {
     
     var assetCollection: MPAssetCollectionProtocol?
     
-    let numberOfCollumn: Int = 5
+    let numberOfCollumn: Int = 3
     
-    let collumMargin: Int = 5
+    let collumMargin: CGFloat = 5
     
     var thumbnailSize = CGSize.zero
     
@@ -43,20 +43,27 @@ class PickerCollectionView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let cellWidth = (Int(frame.size.width) - self.collumMargin * (self.numberOfCollumn - 1))/self.numberOfCollumn
-        self.thumbnailSize = CGSize(width: cellWidth, height: cellWidth)
+        
         
         setUpUI()
     }
     
     func setUpUI() {
         
+        let cellWidth = (Int(frame.size.width) - Int(self.collumMargin) * (self.numberOfCollumn - 1) - 20)/self.numberOfCollumn
+        self.thumbnailSize = CGSize(width: cellWidth, height: cellWidth)
+        
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = self.thumbnailSize
+        layout.minimumInteritemSpacing = collumMargin
+        layout.minimumLineSpacing = collumMargin
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         layout.scrollDirection = UICollectionView.ScrollDirection.vertical
+        
         let cv = UICollectionView(frame: self.frame, collectionViewLayout: layout)
         cv.dataSource = self
         cv.delegate = self
+        cv.prefetchDataSource = self
         
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .white
@@ -68,6 +75,7 @@ class PickerCollectionView: UIView {
         
         cv.register(UINib(nibName: "ThumbnailCell", bundle: nil), forCellWithReuseIdentifier: "ThumbnailCell")
     }
+    
     
     func reloadCollectionView() {
         guard let assetCollection = dataSource?.assetCollectionFor(collectionView: self) else {
@@ -122,4 +130,51 @@ extension PickerCollectionView: UICollectionViewDataSource, UICollectionViewDele
     
         return cell;
     }
+}
+
+extension PickerCollectionView: UICollectionViewDataSourcePrefetching {
+    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        print("prefetch: \(indexPaths)")
+        guard let collection = self.assetCollection else {
+            return
+        }
+        
+        var assets = [PHAsset]()
+        for indexPath in indexPaths {
+            let asset = collection.assetAt(index: indexPath.row)
+            assets.append(asset)
+            
+        }
+        
+        //tao thumbnail image o background thread
+        MPPhotoLib.sharedInstance
+            .imageCachingManager.startCachingImages(for: assets, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+       
+         print("cancel prefetch: \(indexPaths)")
+            for indexPath in indexPaths {
+                guard let requestID = requestIDDictionary[indexPath.row] else { continue }
+                print("cancel reques: \(requestID)")
+                MPPhotoLib.sharedInstance
+                .imageCachingManager
+                .cancelImageRequest(requestID)
+                self.requestIDDictionary.removeValue(forKey: indexPath.row)
+            }
+//            queue.async { [weak self] in
+//                guard let `self` = self, let collection = self.focusedCollection else { return }
+//                var assets = [PHAsset]()
+//                for indexPath in indexPaths {
+//                    if let asset = collection.getAsset(at: indexPath.row) {
+//                        assets.append(asset)
+//                    }
+//                }
+//                let scale = max(UIScreen.main.scale,2)
+//                let targetSize = CGSize(width: self.thumbnailSize.width*scale, height: self.thumbnailSize.height*scale)
+//                self.photoLibrary.imageManager.stopCachingImages(for: assets, targetSize: targetSize, contentMode: .aspectFill, options: nil)
+//            }
+        }
+    
 }

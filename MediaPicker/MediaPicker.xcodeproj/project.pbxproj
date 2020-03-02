@@ -13,6 +13,10 @@
 		A953BE5A24052B15005A8F2D /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A953BE5824052B15005A8F2D /* ThumbnailCell.swift */; };
 		A953BE5B24052B15005A8F2D /* ThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A953BE5924052B15005A8F2D /* ThumbnailCell.xib */; };
 		A953BE6324053361005A8F2D /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A953BE6224053361005A8F2D /* PickerViewController.swift */; };
+		A9596C81240CB9D70011F36F /* AlbumsTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9596C80240CB9D70011F36F /* AlbumsTableview.swift */; };
+		A9596C84240CBA590011F36F /* CollectAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9596C82240CBA590011F36F /* CollectAssetCell.swift */; };
+		A9596C85240CBA590011F36F /* CollectAssetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9596C83240CBA590011F36F /* CollectAssetCell.xib */; };
+		A9596C87240CCADC0011F36F /* AlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9596C86240CCADC0011F36F /* AlbumsViewController.swift */; };
 		A9860DCC2403CEDE0031335D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9860DCB2403CEDE0031335D /* AppDelegate.swift */; };
 		A9860DCE2403CEDE0031335D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9860DCD2403CEDE0031335D /* SceneDelegate.swift */; };
 		A9860DD02403CEDE0031335D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9860DCF2403CEDE0031335D /* ViewController.swift */; };
@@ -31,6 +35,10 @@
 		A953BE5824052B15005A8F2D /* ThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
 		A953BE5924052B15005A8F2D /* ThumbnailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThumbnailCell.xib; sourceTree = "<group>"; };
 		A953BE6224053361005A8F2D /* PickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
+		A9596C80240CB9D70011F36F /* AlbumsTableview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsTableview.swift; sourceTree = "<group>"; };
+		A9596C82240CBA590011F36F /* CollectAssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectAssetCell.swift; sourceTree = "<group>"; };
+		A9596C83240CBA590011F36F /* CollectAssetCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectAssetCell.xib; sourceTree = "<group>"; };
+		A9596C86240CCADC0011F36F /* AlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewController.swift; sourceTree = "<group>"; };
 		A9860DC82403CEDE0031335D /* MediaPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9860DCB2403CEDE0031335D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A9860DCD2403CEDE0031335D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,13 +70,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A95062D9240610AE007C0147 /* Popup */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Popup;
-			sourceTree = "<group>";
-		};
 		A953BE2D2404D367005A8F2D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -80,21 +81,21 @@
 		A953BE5424052772005A8F2D /* Picker */ = {
 			isa = PBXGroup;
 			children = (
-				A95062D9240610AE007C0147 /* Popup */,
+				A9596C7F240CB9610011F36F /* Albums */,
 				A953BE612405319B005A8F2D /* Controller */,
-				A953BE5724052AED005A8F2D /* Thumbnail */,
-				A953BE55240527EB005A8F2D /* PickerCollectionView.swift */,
+				A953BE5724052AED005A8F2D /* Collection */,
 			);
 			path = Picker;
 			sourceTree = "<group>";
 		};
-		A953BE5724052AED005A8F2D /* Thumbnail */ = {
+		A953BE5724052AED005A8F2D /* Collection */ = {
 			isa = PBXGroup;
 			children = (
 				A953BE5824052B15005A8F2D /* ThumbnailCell.swift */,
 				A953BE5924052B15005A8F2D /* ThumbnailCell.xib */,
+				A953BE55240527EB005A8F2D /* PickerCollectionView.swift */,
 			);
-			path = Thumbnail;
+			path = Collection;
 			sourceTree = "<group>";
 		};
 		A953BE5C24052B3A005A8F2D /* PhotoLib */ = {
@@ -110,8 +111,19 @@
 			isa = PBXGroup;
 			children = (
 				A953BE6224053361005A8F2D /* PickerViewController.swift */,
+				A9596C86240CCADC0011F36F /* AlbumsViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		A9596C7F240CB9610011F36F /* Albums */ = {
+			isa = PBXGroup;
+			children = (
+				A9596C80240CB9D70011F36F /* AlbumsTableview.swift */,
+				A9596C82240CBA590011F36F /* CollectAssetCell.swift */,
+				A9596C83240CBA590011F36F /* CollectAssetCell.xib */,
+			);
+			path = Albums;
 			sourceTree = "<group>";
 		};
 		A9860DBF2403CEDE0031335D = {
@@ -220,6 +232,7 @@
 				A9860DD82403CEE30031335D /* LaunchScreen.storyboard in Resources */,
 				A953BE5B24052B15005A8F2D /* ThumbnailCell.xib in Resources */,
 				A9860DD52403CEE30031335D /* Assets.xcassets in Resources */,
+				A9596C85240CBA590011F36F /* CollectAssetCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,10 +287,13 @@
 			files = (
 				A953BE2F2404D38B005A8F2D /* FetchOption.swift in Sources */,
 				A953BE5A24052B15005A8F2D /* ThumbnailCell.swift in Sources */,
+				A9596C84240CBA590011F36F /* CollectAssetCell.swift in Sources */,
 				A953BE6324053361005A8F2D /* PickerViewController.swift in Sources */,
 				A953BE56240527EB005A8F2D /* PickerCollectionView.swift in Sources */,
 				A9860DE02403D16B0031335D /* MPPhotoLib.swift in Sources */,
+				A9596C81240CB9D70011F36F /* AlbumsTableview.swift in Sources */,
 				A95062D824060F98007C0147 /* MPAssetCollection.swift in Sources */,
+				A9596C87240CCADC0011F36F /* AlbumsViewController.swift in Sources */,
 				A9860DD02403CEDE0031335D /* ViewController.swift in Sources */,
 				A9860DCC2403CEDE0031335D /* AppDelegate.swift in Sources */,
 				A9860DCE2403CEDE0031335D /* SceneDelegate.swift in Sources */,

@@ -11,6 +11,8 @@ import Photos
 
 protocol MPAssetCollectionProtocol {
     
+    var collectionName: String { get }
+    
     var numberOfAssets: Int { get }
     
     func assetAt(index: Int) -> PHAsset
@@ -24,11 +26,24 @@ class MPAssetCollection: NSObject {
     var fetchResult: PHFetchResult<PHAsset>? = nil
     
     init(assetCollection: PHAssetCollection) {
+        self.assetCollection = assetCollection
         fetchResult = PHAsset.fetchAssets(in: assetCollection, options: nil)
+    }
+    
+    func isEqual(_ object: MPAssetCollection) -> Bool {
+        return  collectionName == object.collectionName
     }
 }
 
 extension MPAssetCollection: MPAssetCollectionProtocol {
+    
+    var collectionName: String {
+        if let title = assetCollection?.localizedTitle {
+            return title
+        }
+        
+        return "Other"
+    }
     
     var numberOfAssets: Int {
            guard let count = self.fetchResult?.count else {

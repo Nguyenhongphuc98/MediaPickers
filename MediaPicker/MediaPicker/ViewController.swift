@@ -40,8 +40,9 @@ class ViewController: UIViewController {
     }
     
     @objc func openMediaButtonDidClick(sender: UITapGestureRecognizer) {
+        openButton.backgroundColor = .blue
         let pickerVC = PickerViewController()
-        self.navigationController?.present(pickerVC, animated: true, completion: nil)
+        self.navigationController?.pushViewController(pickerVC, animated: true)
     } 
 }
 
