@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A95062D824060F98007C0147 /* MPAssetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95062D724060F98007C0147 /* MPAssetCollection.swift */; };
+		A9515203240F9B3B008B678D /* MPCropAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9515202240F9B3B008B678D /* MPCropAreaView.swift */; };
+		A9515205240F9C40008B678D /* MPCropControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9515204240F9C40008B678D /* MPCropControl.swift */; };
 		A953BE2F2404D38B005A8F2D /* FetchOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = A953BE2E2404D38B005A8F2D /* FetchOption.swift */; };
 		A953BE56240527EB005A8F2D /* PickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A953BE55240527EB005A8F2D /* PickerCollectionView.swift */; };
 		A953BE5A24052B15005A8F2D /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A953BE5824052B15005A8F2D /* ThumbnailCell.swift */; };
@@ -17,6 +19,9 @@
 		A9596C84240CBA590011F36F /* CollectAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9596C82240CBA590011F36F /* CollectAssetCell.swift */; };
 		A9596C85240CBA590011F36F /* CollectAssetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9596C83240CBA590011F36F /* CollectAssetCell.xib */; };
 		A9596C87240CCADC0011F36F /* AlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9596C86240CCADC0011F36F /* AlbumsViewController.swift */; };
+		A95EC0C7240E01F700061057 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95EC0C6240E01F700061057 /* ImageViewController.swift */; };
+		A95EC0C9240E02CC00061057 /* MPAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95EC0C8240E02CC00061057 /* MPAsset.swift */; };
+		A95EC0CD240E5FE600061057 /* MPCropRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95EC0CC240E5FE600061057 /* MPCropRotationView.swift */; };
 		A9860DCC2403CEDE0031335D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9860DCB2403CEDE0031335D /* AppDelegate.swift */; };
 		A9860DCE2403CEDE0031335D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9860DCD2403CEDE0031335D /* SceneDelegate.swift */; };
 		A9860DD02403CEDE0031335D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9860DCF2403CEDE0031335D /* ViewController.swift */; };
@@ -30,6 +35,8 @@
 		02935FD06C538D50BD2CF4CF /* Pods_MediaPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MediaPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		26ECF45311F231C141128357 /* Pods-MediaPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaPicker.release.xcconfig"; path = "Target Support Files/Pods-MediaPicker/Pods-MediaPicker.release.xcconfig"; sourceTree = "<group>"; };
 		A95062D724060F98007C0147 /* MPAssetCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPAssetCollection.swift; sourceTree = "<group>"; };
+		A9515202240F9B3B008B678D /* MPCropAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropAreaView.swift; sourceTree = "<group>"; };
+		A9515204240F9C40008B678D /* MPCropControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropControl.swift; sourceTree = "<group>"; };
 		A953BE2E2404D38B005A8F2D /* FetchOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchOption.swift; sourceTree = "<group>"; };
 		A953BE55240527EB005A8F2D /* PickerCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerCollectionView.swift; sourceTree = "<group>"; };
 		A953BE5824052B15005A8F2D /* ThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
@@ -39,6 +46,9 @@
 		A9596C82240CBA590011F36F /* CollectAssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectAssetCell.swift; sourceTree = "<group>"; };
 		A9596C83240CBA590011F36F /* CollectAssetCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectAssetCell.xib; sourceTree = "<group>"; };
 		A9596C86240CCADC0011F36F /* AlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewController.swift; sourceTree = "<group>"; };
+		A95EC0C6240E01F700061057 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		A95EC0C8240E02CC00061057 /* MPAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPAsset.swift; sourceTree = "<group>"; };
+		A95EC0CC240E5FE600061057 /* MPCropRotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropRotationView.swift; sourceTree = "<group>"; };
 		A9860DC82403CEDE0031335D /* MediaPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9860DCB2403CEDE0031335D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A9860DCD2403CEDE0031335D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +113,7 @@
 			children = (
 				A9860DDF2403D16B0031335D /* MPPhotoLib.swift */,
 				A95062D724060F98007C0147 /* MPAssetCollection.swift */,
+				A95EC0C8240E02CC00061057 /* MPAsset.swift */,
 			);
 			path = PhotoLib;
 			sourceTree = "<group>";
@@ -112,6 +123,7 @@
 			children = (
 				A953BE6224053361005A8F2D /* PickerViewController.swift */,
 				A9596C86240CCADC0011F36F /* AlbumsViewController.swift */,
+				A95EC0C6240E01F700061057 /* ImageViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -124,6 +136,16 @@
 				A9596C83240CBA590011F36F /* CollectAssetCell.xib */,
 			);
 			path = Albums;
+			sourceTree = "<group>";
+		};
+		A95EC0CB240E5F9F00061057 /* Editor */ = {
+			isa = PBXGroup;
+			children = (
+				A95EC0CC240E5FE600061057 /* MPCropRotationView.swift */,
+				A9515202240F9B3B008B678D /* MPCropAreaView.swift */,
+				A9515204240F9C40008B678D /* MPCropControl.swift */,
+			);
+			path = Editor;
 			sourceTree = "<group>";
 		};
 		A9860DBF2403CEDE0031335D = {
@@ -147,6 +169,7 @@
 		A9860DCA2403CEDE0031335D /* MediaPicker */ = {
 			isa = PBXGroup;
 			children = (
+				A95EC0CB240E5F9F00061057 /* Editor */,
 				A953BE5C24052B3A005A8F2D /* PhotoLib */,
 				A953BE5424052772005A8F2D /* Picker */,
 				A953BE2D2404D367005A8F2D /* Utils */,
@@ -289,14 +312,19 @@
 				A953BE5A24052B15005A8F2D /* ThumbnailCell.swift in Sources */,
 				A9596C84240CBA590011F36F /* CollectAssetCell.swift in Sources */,
 				A953BE6324053361005A8F2D /* PickerViewController.swift in Sources */,
+				A9515203240F9B3B008B678D /* MPCropAreaView.swift in Sources */,
 				A953BE56240527EB005A8F2D /* PickerCollectionView.swift in Sources */,
 				A9860DE02403D16B0031335D /* MPPhotoLib.swift in Sources */,
+				A9515205240F9C40008B678D /* MPCropControl.swift in Sources */,
+				A95EC0C7240E01F700061057 /* ImageViewController.swift in Sources */,
 				A9596C81240CB9D70011F36F /* AlbumsTableview.swift in Sources */,
 				A95062D824060F98007C0147 /* MPAssetCollection.swift in Sources */,
 				A9596C87240CCADC0011F36F /* AlbumsViewController.swift in Sources */,
 				A9860DD02403CEDE0031335D /* ViewController.swift in Sources */,
 				A9860DCC2403CEDE0031335D /* AppDelegate.swift in Sources */,
+				A95EC0CD240E5FE600061057 /* MPCropRotationView.swift in Sources */,
 				A9860DCE2403CEDE0031335D /* SceneDelegate.swift in Sources */,
+				A95EC0C9240E02CC00061057 /* MPAsset.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

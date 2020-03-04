@@ -8,7 +8,6 @@
 
 import UIKit
 import ReactiveSwift
-import AsyncDisplayKit
 
 class ViewController: UIViewController {
     

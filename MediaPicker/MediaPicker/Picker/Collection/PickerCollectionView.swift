@@ -12,6 +12,7 @@ import ReactiveSwift
 
 protocol PickerCollectionViewDelegate {
     
+    func pickerCollectionView(collectionview: PickerCollectionView, didSelectImageAt index: Int)
 }
 
 protocol PickerCollectionViewDataSource {
@@ -35,6 +36,8 @@ class PickerCollectionView: UIView {
     
     var dataSource: PickerCollectionViewDataSource?
     
+    var delegate: PickerCollectionViewDelegate?
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setUpUI()
@@ -42,8 +45,6 @@ class PickerCollectionView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        
         
         setUpUI()
     }
@@ -130,8 +131,20 @@ extension PickerCollectionView: UICollectionViewDataSource, UICollectionViewDele
     
         return cell;
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //neu la check thi check thoi
+        
+        //neu la chon anh thi
+        guard let delegate = self.delegate else {
+            return
+        }
+        
+        delegate.pickerCollectionView(collectionview: self, didSelectImageAt: indexPath.row)
+    }
 }
 
+//=======================================================================
 extension PickerCollectionView: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
@@ -147,34 +160,29 @@ extension PickerCollectionView: UICollectionViewDataSourcePrefetching {
             
         }
         
-        //tao thumbnail image o background thread
         MPPhotoLib.sharedInstance
-            .imageCachingManager.startCachingImages(for: assets, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
+            .startCatchingImages(assets: assets, targetSize: thumbnailSize)
     }
     
     open func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-       
-         print("cancel prefetch: \(indexPaths)")
-            for indexPath in indexPaths {
-                guard let requestID = requestIDDictionary[indexPath.row] else { continue }
-                print("cancel reques: \(requestID)")
-                MPPhotoLib.sharedInstance
-                .imageCachingManager
-                .cancelImageRequest(requestID)
-                self.requestIDDictionary.removeValue(forKey: indexPath.row)
-            }
-//            queue.async { [weak self] in
-//                guard let `self` = self, let collection = self.focusedCollection else { return }
-//                var assets = [PHAsset]()
-//                for indexPath in indexPaths {
-//                    if let asset = collection.getAsset(at: indexPath.row) {
-//                        assets.append(asset)
-//                    }
-//                }
-//                let scale = max(UIScreen.main.scale,2)
-//                let targetSize = CGSize(width: self.thumbnailSize.width*scale, height: self.thumbnailSize.height*scale)
-//                self.photoLibrary.imageManager.stopCachingImages(for: assets, targetSize: targetSize, contentMode: .aspectFill, options: nil)
-//            }
+        
+        print("cancel prefetch: \(indexPaths)")
+        var assets = [PHAsset]()
+        
+        for indexPath in indexPaths {
+            //huy bo request anh vi khong can dung den nua
+            guard let requestID = requestIDDictionary[indexPath.row] else { continue }
+            print("cancel reques: \(requestID)")
+            MPPhotoLib.sharedInstance.cancelImageRequest(requestID: requestID)
+            self.requestIDDictionary.removeValue(forKey: indexPath.row)
+            
+            guard let collection = self.assetCollection else { continue }
+            let asset = collection.assetAt(index: indexPath.row)
+            assets.append(asset)
         }
-    
+        
+        //huy bo prefetch vi khong dung
+        MPPhotoLib.sharedInstance
+            .stopCatchingImages(assets: assets, targetSize: thumbnailSize)
+    }
 }

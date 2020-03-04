@@ -11,7 +11,7 @@ import ReactiveSwift
 
 class PickerViewController: UIViewController {
     
-    var collectionView: PickerCollectionView?
+    var collectionView: PickerCollectionView!
     
     var mpCollections: [MPAssetCollection]!
     
@@ -43,7 +43,7 @@ class PickerViewController: UIViewController {
                             self.focus(collection: collection)
                             
                             MPPhotoLib.sharedInstance
-                                .fetchSmartAlbums(subtypes: nil)
+                                .fetchSmartAlbums()
                                 .observe(on: UIScheduler())
                                 .start(Signal<[MPAssetCollection], Never>.Observer(value: { [unowned self] (albums) in
                                     self.mpCollections = albums
@@ -75,8 +75,9 @@ class PickerViewController: UIViewController {
         view.addSubview(albumsButton)
         
         collectionView = PickerCollectionView(frame: self.view.frame)
-        collectionView?.dataSource = self
-        self.view.addSubview(collectionView!)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        self.view.addSubview(collectionView)
     }
     
     func focus(collection: MPAssetCollection) {
@@ -117,5 +118,14 @@ extension PickerViewController: PickerCollectionViewDataSource {
             return nil
         }
         return coll
+    }
+}
+
+extension PickerViewController: PickerCollectionViewDelegate {
+    
+    func pickerCollectionView(collectionview: PickerCollectionView, didSelectImageAt index: Int) {
+        let imageVC = ImageViewController()
+        imageVC.asset = focusedCollection!.assetAt(index: index)
+        navigationController?.pushViewController(imageVC, animated: true)
     }
 }

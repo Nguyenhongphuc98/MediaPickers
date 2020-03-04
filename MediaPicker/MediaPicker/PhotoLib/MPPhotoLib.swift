@@ -29,8 +29,6 @@ private let sharePhotoLib = MPPhotoLib()
 class MPPhotoLib: NSObject {
     
     var imageCachingManager = PHCachingImageManager()
-
-    var isNeedReload = true
     
     var fetchResult: PHFetchResult<PHAsset>? = nil
     
@@ -52,13 +50,16 @@ class MPPhotoLib: NSObject {
                         observer.send(value: .denied)
                         break;
                     }
+                    observer.sendCompleted()
                 }
             case .authorized:
                 observer.send(value: .authorized)
+                observer.sendCompleted()
             default:
                 observer.send(value: .denied)
+                observer.sendCompleted()
             }
-            observer.sendCompleted()
+            
         }
     }
     
@@ -82,15 +83,12 @@ class MPPhotoLib: NSObject {
     }
     
 
-    public func fetchSmartAlbums(subtypes s: [PHAssetCollectionSubtype]?) -> SignalProducer<[MPAssetCollection], Never> {
+    //fetch smart albums theo subtype
+    public func fetchSmartAlbums(subtypes: [PHAssetCollectionSubtype] = [.any]) -> SignalProducer<[MPAssetCollection], Never> {
         
         return SignalProducer { (observer, lifetime) in
             DispatchQueue.global(qos: .background)
                 .async {
-                    var subtypes = s
-                    if subtypes == nil {
-                        subtypes = [.any]
-                    }
                     
                     var assetCollection: [PHAssetCollection] = []
                     var assetCollectionResult: [MPAssetCollection] = []
@@ -98,7 +96,7 @@ class MPPhotoLib: NSObject {
                     let config = MPPhotoConfig()
                     let options = self.generateCollectionOption(config: config)
                     
-                    for subtype in subtypes! {
+                    for subtype in subtypes {
                         let collections = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: subtype, options: options)
                         
                         assetCollection.removeAll()
@@ -122,6 +120,7 @@ class MPPhotoLib: NSObject {
         }
     }
     
+    // lay image cho 1 asset cu the, ket qua co the tra ve nhieu lan
     func requestImageForAsset(asset: PHAsset, size: CGSize = CGSize(width: 150, height: 150)) -> SignalProducer<(UIImage?, PHImageRequestID?), Never> {
         
         return SignalProducer { (observer, lifetime) in
@@ -151,6 +150,41 @@ class MPPhotoLib: NSObject {
             
             observer.send(value: (nil,requestID))
         }
+    }
+    
+    func fullResolutionImageDataFor(asset: PHAsset) -> SignalProducer<UIImage?, Never> {
+        
+        return SignalProducer { (observer, lifetime) in
+            let options = PHImageRequestOptions()
+            //chi lay 1 anh ket qua
+            options.isSynchronous = true
+            options.resizeMode = .none
+            options.isNetworkAccessAllowed = false
+            options.version = .current
+            
+            //load anh lon nhat co the
+            let _ = PHCachingImageManager().requestImageData(for: asset, options: options) { (imageData, dataUTI, orientation, info) in
+                if let data = imageData {
+                    observer.send(value: UIImage(data: data))
+                }
+                observer.sendCompleted()
+            }
+        }
+    }
+    
+    //huy bo anh dang duoc request nhung khong can den nua
+    func cancelImageRequest(requestID: PHImageRequestID) {
+        imageCachingManager.cancelImageRequest(requestID)
+    }
+    
+    //tao thumbnail image o background thread
+    func startCatchingImages(assets: [PHAsset], targetSize: CGSize, contentMode: PHImageContentMode = .aspectFill, options: PHImageRequestOptions? = nil) {
+        imageCachingManager.startCachingImages(for: assets, targetSize: targetSize, contentMode: contentMode, options: options)
+    }
+    
+    //huy bo catching image, vd khi dao chieu collectionview
+    func stopCatchingImages(assets: [PHAsset], targetSize: CGSize, contentMode: PHImageContentMode = .aspectFill, options: PHImageRequestOptions? = nil) {
+        imageCachingManager.stopCachingImages(for: assets, targetSize: targetSize, contentMode: contentMode, options: options)
     }
 }
 
