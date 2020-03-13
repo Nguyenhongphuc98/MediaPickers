@@ -22,7 +22,7 @@ class MPCropRotationView: UIControl {
     
     let needleRotationView: UIImageView
     
-    public var angleChanged: ((_ angle: CGFloat) -> Void)?
+    public var angleDidChange: ((_ angle: CGFloat) -> Void)?
     
     override init(frame: CGRect) {
         
@@ -104,7 +104,7 @@ class MPCropRotationView: UIControl {
             let newAngleInDegrees = min(MPCropRotationViewMaxAngleInDegrees, max(-MPCropRotationViewMaxAngleInDegrees, angleInDegrees - deltaAngle))
             
             angle = newAngleInDegrees * .pi / 180
-            if let anglechanged = self.angleChanged {
+            if let anglechanged = self.angleDidChange {
                 anglechanged(angle)
             }
             setNeedsLayout()

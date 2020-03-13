@@ -89,6 +89,18 @@ class PickerCollectionView: UIView {
         self.assetCollection = assetCollection
         collectionview?.reloadData()
     }
+    
+    public func cancelAllImageRequest() {
+        guard requestIDDictionary.count != 0 else { return }
+        
+        let requests = requestIDDictionary
+        
+        for request in requests {
+            print("cancel reques: \(request.value)")
+            MPPhotoLib.sharedInstance.cancelImageRequest(requestID: request.value)
+            self.requestIDDictionary.removeValue(forKey: request.key)
+        }
+    }
 }
 
 //=======================================================================

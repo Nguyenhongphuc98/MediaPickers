@@ -90,6 +90,7 @@ class PickerViewController: UIViewController {
     @objc func albumsButtonDidClick() {
         
         //cancel image all requets
+        collectionView.cancelAllImageRequest()
         
         let albumVC = AlbumsViewController()
         albumVC.albums = mpCollections
@@ -107,7 +108,8 @@ class PickerViewController: UIViewController {
             }))
         
         modalPresentationStyle = UIModalPresentationStyle.popover
-        present(albumVC, animated: true, completion: {print("present complete")})
+        //present(albumVC, animated: true, completion: {print("present complete")})
+        navigationController?.pushViewController(albumVC, animated: true)
     }
 }
 

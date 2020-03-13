@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A94EE2C8241B342600F74007 /* MPCropContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94EE2C7241B342600F74007 /* MPCropContentView.swift */; };
+		A94F7A352418DFE900F7940E /* MPCropGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94F7A342418DFE900F7940E /* MPCropGridView.swift */; };
+		A94F7A372418FCD700F7940E /* MPCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94F7A362418FCD700F7940E /* MPCropView.swift */; };
 		A95062D824060F98007C0147 /* MPAssetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95062D724060F98007C0147 /* MPAssetCollection.swift */; };
 		A9515203240F9B3B008B678D /* MPCropAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9515202240F9B3B008B678D /* MPCropAreaView.swift */; };
 		A9515205240F9C40008B678D /* MPCropControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9515204240F9C40008B678D /* MPCropControl.swift */; };
+		A9535C3B2419D62F00AFDAF9 /* MPCropScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9535C3A2419D62F00AFDAF9 /* MPCropScrollView.swift */; };
 		A953BE2F2404D38B005A8F2D /* FetchOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = A953BE2E2404D38B005A8F2D /* FetchOption.swift */; };
 		A953BE56240527EB005A8F2D /* PickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A953BE55240527EB005A8F2D /* PickerCollectionView.swift */; };
 		A953BE5A24052B15005A8F2D /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A953BE5824052B15005A8F2D /* ThumbnailCell.swift */; };
@@ -34,9 +38,13 @@
 /* Begin PBXFileReference section */
 		02935FD06C538D50BD2CF4CF /* Pods_MediaPicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MediaPicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		26ECF45311F231C141128357 /* Pods-MediaPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaPicker.release.xcconfig"; path = "Target Support Files/Pods-MediaPicker/Pods-MediaPicker.release.xcconfig"; sourceTree = "<group>"; };
+		A94EE2C7241B342600F74007 /* MPCropContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropContentView.swift; sourceTree = "<group>"; };
+		A94F7A342418DFE900F7940E /* MPCropGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropGridView.swift; sourceTree = "<group>"; };
+		A94F7A362418FCD700F7940E /* MPCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropView.swift; sourceTree = "<group>"; };
 		A95062D724060F98007C0147 /* MPAssetCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPAssetCollection.swift; sourceTree = "<group>"; };
 		A9515202240F9B3B008B678D /* MPCropAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropAreaView.swift; sourceTree = "<group>"; };
 		A9515204240F9C40008B678D /* MPCropControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropControl.swift; sourceTree = "<group>"; };
+		A9535C3A2419D62F00AFDAF9 /* MPCropScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropScrollView.swift; sourceTree = "<group>"; };
 		A953BE2E2404D38B005A8F2D /* FetchOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchOption.swift; sourceTree = "<group>"; };
 		A953BE55240527EB005A8F2D /* PickerCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerCollectionView.swift; sourceTree = "<group>"; };
 		A953BE5824052B15005A8F2D /* ThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
@@ -144,6 +152,10 @@
 				A95EC0CC240E5FE600061057 /* MPCropRotationView.swift */,
 				A9515202240F9B3B008B678D /* MPCropAreaView.swift */,
 				A9515204240F9C40008B678D /* MPCropControl.swift */,
+				A94F7A342418DFE900F7940E /* MPCropGridView.swift */,
+				A94F7A362418FCD700F7940E /* MPCropView.swift */,
+				A9535C3A2419D62F00AFDAF9 /* MPCropScrollView.swift */,
+				A94EE2C7241B342600F74007 /* MPCropContentView.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -312,12 +324,16 @@
 				A953BE5A24052B15005A8F2D /* ThumbnailCell.swift in Sources */,
 				A9596C84240CBA590011F36F /* CollectAssetCell.swift in Sources */,
 				A953BE6324053361005A8F2D /* PickerViewController.swift in Sources */,
+				A94F7A372418FCD700F7940E /* MPCropView.swift in Sources */,
 				A9515203240F9B3B008B678D /* MPCropAreaView.swift in Sources */,
 				A953BE56240527EB005A8F2D /* PickerCollectionView.swift in Sources */,
 				A9860DE02403D16B0031335D /* MPPhotoLib.swift in Sources */,
+				A94F7A352418DFE900F7940E /* MPCropGridView.swift in Sources */,
 				A9515205240F9C40008B678D /* MPCropControl.swift in Sources */,
 				A95EC0C7240E01F700061057 /* ImageViewController.swift in Sources */,
+				A94EE2C8241B342600F74007 /* MPCropContentView.swift in Sources */,
 				A9596C81240CB9D70011F36F /* AlbumsTableview.swift in Sources */,
+				A9535C3B2419D62F00AFDAF9 /* MPCropScrollView.swift in Sources */,
 				A95062D824060F98007C0147 /* MPAssetCollection.swift in Sources */,
 				A9596C87240CCADC0011F36F /* AlbumsViewController.swift in Sources */,
 				A9860DD02403CEDE0031335D /* ViewController.swift in Sources */,

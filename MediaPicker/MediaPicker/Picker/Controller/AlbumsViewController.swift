@@ -50,6 +50,7 @@ extension AlbumsViewController: AlbumsTableViewDelegate {
     
     func didSelectRow(row: Int) {
         focusIndex.value = row
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
 }

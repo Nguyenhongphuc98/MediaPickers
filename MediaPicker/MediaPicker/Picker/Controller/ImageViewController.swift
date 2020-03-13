@@ -32,25 +32,34 @@ class ImageViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         
         view.backgroundColor = .black
-        
+ 
         MPPhotoLib.sharedInstance
             .fullResolutionImageDataFor(asset: asset)
             .observe(on: UIScheduler())
             .start(Signal<UIImage?, Never>.Observer(value: { (image) in
-                imageView.image = image
+                //imageView.image = image
+                if let i = image {
+                    let canvasInset = UIEdgeInsets(top: 20, left: 10, bottom: 20, right: 10)
+                    let cropView = MPCropView(frame: self.view.bounds, insets: canvasInset, image: i)
+                    self.view.addSubview(cropView)
+                }
+                
             }, completed: {
                 print("complete")
             }))
         view.addSubview(imageView)
         
-        cropRotationView = MPCropRotationView(frame: CGRect(x: 0, y: 200, width: view.frame.width, height: 200))
-        cropRotationView.angleChanged = { angle in
-            print("receive angle did change: \(angle)")
-        }
-        view.addSubview(cropRotationView)
+//        cropRotationView = MPCropRotationView(frame: CGRect(x: 0, y: 200, width: view.frame.width, height: 200))
+//        cropRotationView.angleDidChange = { angle in
+//            print("receive angle did change: \(angle)")
+//        }
+//        view.addSubview(cropRotationView)
+//
+//        cropAreaView = MPCropAreaView(frame: CGRect(x:30, y: 300, width: view.frame.width - 60, height: 200))
+//        view.addSubview(cropAreaView)
         
-        cropAreaView = MPCropAreaView(frame: CGRect(x:30, y: 300, width: view.frame.width - 60, height: 200))
-        view.addSubview(cropAreaView)
+        
+       
     }
 
     func actionButton() {
@@ -66,6 +75,6 @@ class ImageViewController: UIViewController {
     }
     
     @objc func resetButtonDidClick() {
-        cropRotationView.setAngle(angle: 0, isAnimate: true)
+       // cropRotationView.setAngle(angle: 0, isAnimate: true)
     }
 }

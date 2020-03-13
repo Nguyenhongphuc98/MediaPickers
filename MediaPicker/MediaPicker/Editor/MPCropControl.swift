@@ -9,8 +9,12 @@
 import UIKit
 
 class MPCropControl: UIControl {
+    
+    public var didBeginResize: ((_ sender: MPCropControl) -> ())?
 
     public var didResize: ((_ sender: MPCropControl, _ translation: CGPoint)->())?
+    
+    public var didEndResize: ((_ sender: MPCropControl) -> ())?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,7 +44,9 @@ class MPCropControl: UIControl {
         
         switch gesture.state {
         case .began:
-            print("begin pan")
+            if let didBegin = self.didBeginResize {
+                didBegin(self)
+            }
             
         case .changed:
             let translation = gesture.translation(in: superview)
@@ -50,10 +56,12 @@ class MPCropControl: UIControl {
             }
             
             gesture.setTranslation(CGPoint.zero, in: superview)
-            print("begin pan")
+            print("change pan")
             
         case .ended, .cancelled:
-            print("pan ended | cancel")
+            if let didEnd = self.didEndResize {
+                didEnd(self)
+            }
             
         default:
             break;
@@ -61,10 +69,26 @@ class MPCropControl: UIControl {
     }
     
     @objc func userDidPress(gesture: UIPanGestureRecognizer) {
-        print("press control")
+        switch gesture.state {
+        case .began:
+            print("began press")
+            if let didBegin = self.didBeginResize {
+                didBegin(self)
+            }
+            
+        case .ended, .cancelled:
+            print("ended press")
+            if let didEnd = self.didEndResize {
+                didEnd(self)
+            }
+            
+        default:
+            break;
+        }
     }
 }
 
+// MARK: recognize delegate
 extension MPCropControl: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
