@@ -57,7 +57,7 @@ class MPCropAreaView: UIControl {
     //grid view============================================
     var majorGridView: MPCropGridView!
     
-    var monorGridView: MPCropGridView!
+    var minorGridView: MPCropGridView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -124,9 +124,9 @@ class MPCropAreaView: UIControl {
         majorGridView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         majorGridView.isHidden = true
         
-        monorGridView = MPCropGridView(mode: .Major, frame: bounds)
-        monorGridView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        monorGridView.isHidden = true
+        minorGridView = MPCropGridView(mode: .Minor, frame: bounds)
+        minorGridView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        minorGridView.isHidden = true
         
         cornersView = UIImageView(frame: bounds.insetBy(dx: -2, dy: -2))
         cornersView?.image = #imageLiteral(resourceName: "PhotoEditorCropCorners")
@@ -150,7 +150,7 @@ class MPCropAreaView: UIControl {
         addSubview(bottomRightCornerControl)
         
         addSubview(majorGridView)
-        addSubview(monorGridView)
+        addSubview(minorGridView)
         
     }
     
@@ -378,16 +378,26 @@ class MPCropAreaView: UIControl {
         switch gridMode {
         case .Major:
             majorGridView.setHidden(isHidden: false, isAnimate: isAnimate)
-            monorGridView.setHidden(isHidden: true, isAnimate: isAnimate)
+            minorGridView.setHidden(isHidden: true, isAnimate: isAnimate)
             
-            case .Minor:
+        case .Minor:
             majorGridView.setHidden(isHidden: true, isAnimate: isAnimate)
-            monorGridView.setHidden(isHidden: false, isAnimate: isAnimate)
+            minorGridView.setHidden(isHidden: false, isAnimate: isAnimate)
             
         default:
             majorGridView.setHidden(isHidden: true, isAnimate: isAnimate)
-            monorGridView.setHidden(isHidden: true, isAnimate: isAnimate)
+            minorGridView.setHidden(isHidden: true, isAnimate: isAnimate)
         }
+    }
+    
+    // MARK: overide method
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        
+        let view = super.hitTest(point, with: event)
+        if view is MPCropControl {
+            return view
+        }
+        return nil
     }
     
     // MARK: internal utilities

@@ -22,7 +22,11 @@ class MPCropRotationView: UIControl {
     
     let needleRotationView: UIImageView
     
+    public var angleDidBeginChanging: (() -> Void)?
+    
     public var angleDidChange: ((_ angle: CGFloat) -> Void)?
+    
+    public var angleDidEndChanging: (() -> Void)?
     
     override init(frame: CGRect) {
         
@@ -90,8 +94,12 @@ class MPCropRotationView: UIControl {
     
     @objc func userDidPan(gesture: UIPanGestureRecognizer) {
         switch gesture.state {
+            
         case .began:
-            print("pan began")
+            if let angleBeginChanging = self.angleDidBeginChanging {
+                angleBeginChanging()
+            }
+            
         case .changed:
             
             var translation: CGFloat = 0
@@ -111,8 +119,12 @@ class MPCropRotationView: UIControl {
 
             gesture.setTranslation(CGPoint.zero, in: self)
             print("change: \(translation)")
+            
         case .ended,.cancelled:
-            print("pan ended | canceled")
+            if let angleEndChanging = self.angleDidEndChanging {
+                angleEndChanging()
+            }
+            
         default:
             break
         }

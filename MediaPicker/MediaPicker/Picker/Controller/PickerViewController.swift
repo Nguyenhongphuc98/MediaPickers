@@ -126,7 +126,7 @@ extension PickerViewController: PickerCollectionViewDataSource {
 extension PickerViewController: PickerCollectionViewDelegate {
     
     func pickerCollectionView(collectionview: PickerCollectionView, didSelectImageAt index: Int) {
-        let imageVC = ImageViewController()
+        let imageVC = CropViewController()
         imageVC.asset = focusedCollection!.assetAt(index: index)
         navigationController?.pushViewController(imageVC, animated: true)
     }

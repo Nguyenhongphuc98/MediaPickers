@@ -17,6 +17,19 @@ class MPCropScrollView: UIView {
     
     var scrollview: UIScrollView!
     
+    var contentOffset: CGPoint {
+        get {
+            return scrollview.contentOffset
+        }
+        set {
+            scrollview.setContentOffset(newValue, animated: true)
+        }
+    }
+    
+    var contentSize: CGSize {
+        scrollview.contentSize
+    }
+    
     var contentWillBeZooming: (()->Void)?
     
     var contentDidEndZooming: (()->Void)?
@@ -32,19 +45,24 @@ class MPCropScrollView: UIView {
     }
     
     private func setUpUI() {
+        backgroundColor = .clear
+        clipsToBounds = false
         contentView = MPCropContentView(frame: bounds)
-        addSubview(contentView)
+        //addSubview(contentView)
         
         scrollview = UIScrollView(frame: bounds)
         scrollview.delegate = self
         scrollview.bounces = true
         scrollview.alwaysBounceVertical = true
         scrollview.alwaysBounceHorizontal = true
+        scrollview.clipsToBounds = false
         scrollview.minimumZoomScale = MPCropScrollViewMinimumSoomScale
         scrollview.maximumZoomScale = MPCropScrollViewMaximumSoomScale
         scrollview.showsVerticalScrollIndicator = false
         scrollview.showsHorizontalScrollIndicator = false
         scrollview.contentSize = CGSize(width: bounds.width, height: bounds.height)
+        scrollview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        scrollview.addSubview(contentView)
         addSubview(scrollview)
     }
     
@@ -54,6 +72,31 @@ class MPCropScrollView: UIView {
     
     func zoom(to rect: CGRect, isAnimate: Bool) {
         scrollview.zoom(to: rect, animated: isAnimate)
+    }
+    
+    func scaleToBounds() {
+        scrollview.setZoomScale(makeScaleToBounds(), animated: false)
+    }
+    
+    func makeScaleToBounds() -> CGFloat {
+        let scaleWidth = bounds.size.width / contentView.bounds.size.width
+        let scaleHeight = bounds.size.height / contentView.bounds.size.height
+        
+        return max(scaleWidth, scaleHeight)
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+//        let lineColor = UIColor.red
+//        lineColor.setFill()
+//        
+//        //scrollview.isHidden = true
+//        
+//        UIRectFill(CGRect(x: 0, y: 0, width: rect.width, height: 3))
+//        UIRectFill(CGRect(x: 0, y: 0, width: 3, height: rect.height))
+//        UIRectFill(CGRect(x: 0, y: rect.height, width: rect.width, height: 3))
+//        UIRectFill(CGRect(x: rect.width / 2 - 2, y: rect.height / 2 - 2, width: 4, height: 4))
+        
     }
 }
 
