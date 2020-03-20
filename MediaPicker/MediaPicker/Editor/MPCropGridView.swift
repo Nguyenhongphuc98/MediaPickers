@@ -33,7 +33,7 @@ class MPCropGridView: UIView {
         self.mode = mode
         
         if mode == .Minor {
-            lineColor = UIColor(displayP3Red: 238, green: 238, blue: 238, alpha: 0.8)
+            lineColor = UIColor(displayP3Red: 238 / 255, green: 238 / 255, blue: 238 / 255, alpha: 0.8)
         }
         
         super.init(frame: frame)

@@ -41,7 +41,13 @@ class MPCropRotationView: UIControl {
         super.init(frame: frame)
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(userDidPan(gesture:)))
+        panGesture.delegate = self
         self.addGestureRecognizer(panGesture)
+        
+        let pressGesture = UILongPressGestureRecognizer(target: self, action: #selector(userDidPress(gesture:)))
+        pressGesture.delegate = self
+        pressGesture.minimumPressDuration = 0.1
+        self.addGestureRecognizer(pressGesture)
         
         self.clipsToBounds = true
         addSubview(wheelRotationView)
@@ -74,7 +80,7 @@ class MPCropRotationView: UIControl {
         
         if isAnimate {
             
-            UIView.animate(withDuration: 1) {
+            UIView.animate(withDuration: 0.3) {
                 self.wheelRotationView.transform = CGAffineTransform.identity
             }
             setAngle(angle: angle)
@@ -92,7 +98,7 @@ class MPCropRotationView: UIControl {
         //needleRotationView.transform = CGAffineTransform.identity;
     }
     
-    @objc func userDidPan(gesture: UIPanGestureRecognizer) {
+    @objc private func userDidPan(gesture: UIPanGestureRecognizer) {
         switch gesture.state {
             
         case .began:
@@ -118,7 +124,6 @@ class MPCropRotationView: UIControl {
             setNeedsLayout()
 
             gesture.setTranslation(CGPoint.zero, in: self)
-            print("change: \(translation)")
             
         case .ended,.cancelled:
             if let angleEndChanging = self.angleDidEndChanging {
@@ -128,5 +133,30 @@ class MPCropRotationView: UIControl {
         default:
             break
         }
+    }
+    
+    @objc private func userDidPress(gesture: UILongPressGestureRecognizer) {
+        switch gesture.state {
+            
+        case .began:
+            if let angleBeginChanging = self.angleDidBeginChanging {
+                angleBeginChanging()
+            }
+            
+        case .ended,.cancelled:
+            if let angleEndChanging = self.angleDidEndChanging {
+                angleEndChanging()
+            }
+            
+        default:
+            break
+        }
+    }
+}
+
+// MARK: gesture delegate
+extension MPCropRotationView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }

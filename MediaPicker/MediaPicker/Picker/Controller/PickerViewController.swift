@@ -47,6 +47,10 @@ class PickerViewController: UIViewController {
                                 .observe(on: UIScheduler())
                                 .start(Signal<[MPAssetCollection], Never>.Observer(value: { [unowned self] (albums) in
                                     self.mpCollections = albums
+                                    if let _ = self.focusedCollection {
+                                    } else {
+                                        self.focus(collection: albums[0])
+                                    }
                                 }))
                         }))
                     

@@ -85,6 +85,10 @@ class MPCropScrollView: UIView {
         return max(scaleWidth, scaleHeight)
     }
     
+    func resetScale() {
+        scrollview.setZoomScale(1, animated: false)
+    }
+    
     override func draw(_ rect: CGRect) {
         super.draw(rect)
 //        let lineColor = UIColor.red

@@ -372,7 +372,7 @@ class MPCropAreaView: UIControl {
         guard currentGridMode != gridMode else {
             return
         }
-        print("setting gridmode")
+
         currentGridMode = gridMode
         
         switch gridMode {
@@ -388,6 +388,15 @@ class MPCropAreaView: UIControl {
             majorGridView.setHidden(isHidden: true, isAnimate: isAnimate)
             minorGridView.setHidden(isHidden: true, isAnimate: isAnimate)
         }
+    }
+    
+    public func lockAspectRatio(ratio: CGFloat) {
+        isLockAspectRatio = true
+        aspectRatio = ratio
+    }
+    
+    public func unlockAspectRatio() {
+        isLockAspectRatio = false
     }
     
     // MARK: overide method
