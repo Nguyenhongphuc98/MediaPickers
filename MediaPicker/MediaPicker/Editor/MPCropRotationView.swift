@@ -90,12 +90,10 @@ class MPCropRotationView: UIControl {
     }
     
     override func layoutSubviews() {
-        
         wheelRotationView.center = CGPoint(x: self.frame.size.width / 2, y: -152);
         wheelRotationView.transform = CGAffineTransform.init(rotationAngle: angle)
         
         needleRotationView.frame = CGRect(x: (self.frame.size.width - 10)/2, y: 47, width: 10, height: 10);
-        //needleRotationView.transform = CGAffineTransform.identity;
     }
     
     @objc private func userDidPan(gesture: UIPanGestureRecognizer) {
@@ -156,6 +154,7 @@ class MPCropRotationView: UIControl {
 
 // MARK: gesture delegate
 extension MPCropRotationView: UIGestureRecognizerDelegate {
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }

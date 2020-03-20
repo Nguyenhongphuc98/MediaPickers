@@ -21,12 +21,12 @@ class MPCropAreaView: UIControl {
     
     var currentGridMode: GridMode = .None
     
-    //property============================================
+    //property==========================================
     var isLockAspectRatio: Bool = false
     //a = W:H
     var aspectRatio: CGFloat = 0
     
-    //control============================================
+    //control===========================================
     var topEdgeControl: MPCropControl!
     
     var leftEdgeControl: MPCropControl!
@@ -43,7 +43,7 @@ class MPCropAreaView: UIControl {
     
     var bottomRightCornerControl: MPCropControl!
     
-    //view highlight control============================================
+    //view highlight control============================
     var cornersView: UIImageView?
     
     var topEdgeHighLight: UIView!
@@ -54,7 +54,7 @@ class MPCropAreaView: UIControl {
     
     var rightEdgeHighLight: UIView!
     
-    //grid view============================================
+    //grid view=========================================
     var majorGridView: MPCropGridView!
     
     var minorGridView: MPCropGridView!
@@ -230,7 +230,6 @@ class MPCropAreaView: UIControl {
         
         for view in subviews {
             if let controlView = view as? MPCropControl {
-
                 controlView.didBeginResize = didBegin
                 controlView.didResize = didResize
                 controlView.didEndResize = didEnd

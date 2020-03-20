@@ -29,7 +29,7 @@ class MPCropView: UIControl {
     
     var aspectRatio: CGFloat = .zero
     
-    //overlay view
+    //overlay view ==================================
     var overlayWrapperView: UIView!
     
     var topOverlayView: UIView!
@@ -49,7 +49,7 @@ class MPCropView: UIControl {
     
     var scrollView: MPCropScrollView!
     
-    //rotation view
+    //rotation view =================================
     var rotationView: MPCropRotationView!
     
     var canvasInsets: UIEdgeInsets = .zero
@@ -132,39 +132,26 @@ class MPCropView: UIControl {
         areaView.areaDidBeginEditing = {
             self.handleAreaDidBeginEditting()
         }
-        
         areaView.areaDidChange = {
             self.handleAreaDidchange()
         }
-        
         areaView.areaDidEndEditing = {
             self.handleCropAreaDidEndEditting()
         }
         
         rotationView.angleDidBeginChanging = {
-           // self.setAnchorPoint(anchorPoint: CGPoint(x: 0.5, y: 0.5), view: self.scrollView)
-            UIView.animate(withDuration: 0.1) {
-                self.overlayWrapperView.alpha = 0.45
-                self.areaView.setGridMode(gridMode: .Minor, isAnimate: false)
-            }
+            self.handleAngleDidBeginChanging()
         }
-        
         rotationView.angleDidChange = { angle in
             self.setRotation(rotation: angle)
         }
-        
         rotationView.angleDidEndChanging = {
-            
-            self.areaView.setGridMode(gridMode: .None, isAnimate: false)
-            UIView.animate(withDuration: 0.2) {
-                self.overlayWrapperView.alpha = 1
-            }
+            self.handleAngleDidEndChanging()
         }
         
         scrollView.contentWillBeZooming = {
             self.hideOverlayView(isHiden: false, animate: true)
         }
-        
         scrollView.contentDidEndZooming = {
             self.zoomed = true
             self.hideOverlayView(isHiden: true, animate: true)
@@ -288,6 +275,20 @@ class MPCropView: UIControl {
             }
         }
         
+    }
+    
+    private func handleAngleDidBeginChanging() {
+        UIView.animate(withDuration: 0.1) {
+            self.overlayWrapperView.alpha = 0.45
+            self.areaView.setGridMode(gridMode: .Minor, isAnimate: false)
+        }
+    }
+    
+    private func handleAngleDidEndChanging() {
+        self.areaView.setGridMode(gridMode: .None, isAnimate: false)
+        UIView.animate(withDuration: 0.2) {
+            self.overlayWrapperView.alpha = 1
+        }
     }
     
     private func updateFrameForRotationView() {

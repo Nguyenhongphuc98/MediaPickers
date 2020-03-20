@@ -114,6 +114,10 @@ class CropViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "5:3", style: .default , handler:{ (UIAlertAction)in
             self.cropView.lockCropArea(with: 5 / 3)
         }))
+        
+        alert.addAction(UIAlertAction(title: "unlock ratio", style: .destructive , handler:{ (UIAlertAction)in
+            self.cropView.unlockCropArea()
+        }))
 
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction)in
             print("User click Dismiss button")
