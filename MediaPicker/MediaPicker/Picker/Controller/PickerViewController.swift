@@ -8,6 +8,7 @@
 
 import UIKit
 import ReactiveSwift
+import Photos
 
 class PickerViewController: UIViewController {
     
@@ -18,6 +19,8 @@ class PickerViewController: UIViewController {
     var focusedCollection: MPAssetCollection?
     
     var albumsButton: UIButton!
+    
+    var actInd: UIActivityIndicatorView = UIActivityIndicatorView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +34,7 @@ class PickerViewController: UIViewController {
         MPPhotoLib.sharedInstance
             .checkAuthorization()
             .observe(on: UIScheduler())
-            .start(Signal<AuthorizationResult, Never>.Observer(value: { (status) in
+            .start(Signal<AuthorizationResult, Never>.Observer(value: { [unowned self] (status) in
                 
                 switch status {
                 case .authorized:
@@ -57,6 +60,7 @@ class PickerViewController: UIViewController {
                     
                 default:
                     print("don't have permission")
+                    self.albumsButton.isEnabled = false
                 }
                 
             }, completed: {
@@ -67,21 +71,30 @@ class PickerViewController: UIViewController {
     func setUpUI() {
         self.view.backgroundColor = .gray
         
+        actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40);
+        actInd.center = view.center
+        actInd.hidesWhenStopped = true
+        actInd.style = .gray
+        
         albumsButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20))
         albumsButton.setTitle("Albums", for: .normal)
         albumsButton.setTitleColor(.blue, for: .normal)
         albumsButton.setTitleColor(.green, for: .highlighted)
+        albumsButton.setTitleColor(.gray, for: .disabled)
         albumsButton.addTarget(self, action: #selector(albumsButtonDidClick), for: .touchUpInside)
         
         let leftBarButtonItem = UIBarButtonItem()
         leftBarButtonItem.customView = albumsButton
         navigationItem.leftBarButtonItem = leftBarButtonItem
-        view.addSubview(albumsButton)
+        
         
         collectionView = PickerCollectionView(frame: self.view.frame)
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+        view.addSubview(albumsButton)
         self.view.addSubview(collectionView)
+        view.addSubview(actInd)
     }
     
     func focus(collection: MPAssetCollection) {
@@ -130,8 +143,39 @@ extension PickerViewController: PickerCollectionViewDataSource {
 extension PickerViewController: PickerCollectionViewDelegate {
     
     func pickerCollectionView(collectionview: PickerCollectionView, didSelectImageAt index: Int) {
-        let imageVC = CropViewController()
-        imageVC.asset = focusedCollection!.assetAt(index: index)
-        navigationController?.pushViewController(imageVC, animated: true)
+        actInd.startAnimating()
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        
+        var count = 0
+        MPPhotoLib.sharedInstance
+        .requestImageForAsset(asset: focusedCollection!.assetAt(index: index),size: CGSize(width: 1238, height: 822))
+        .observe(on: UIScheduler())
+            .start(Signal<(UIImage?, PHImageRequestID?), Never>.Observer(value: { (img, id) in
+                guard img != nil && id == nil else {
+                    return
+                }
+                count += 1
+                guard count == 2 else {
+                    return
+                }
+                let imageVC = CropViewController(image: img!)
+                self.actInd.stopAnimating()
+                UIApplication.shared.endIgnoringInteractionEvents()
+                self.navigationController?.pushViewController(imageVC, animated: true)
+            }))
+        
+//        MPPhotoLib.sharedInstance
+//            .fullResolutionImageDataFor(asset: focusedCollection!.assetAt(index: index))
+//            .observe(on: UIScheduler())
+//            .start(Signal<UIImage?, Never>.Observer(value: { [unowned self] (image) in
+//
+//                let imageVC = CropViewController(image: image!)
+//                self.actInd.stopAnimating()
+//                UIApplication.shared.endIgnoringInteractionEvents()
+//                self.navigationController?.pushViewController(imageVC, animated: true)
+//            }))
+//        let imageVC = CropViewController()
+//        imageVC.asset = focusedCollection!.assetAt(index: index)
+//        navigationController?.pushViewController(imageVC, animated: true)
     }
 }

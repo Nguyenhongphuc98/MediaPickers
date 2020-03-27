@@ -156,7 +156,7 @@ class MPCropAreaView: UIControl {
     
     func setUpAction() {
         
-        let didBegin: (MPCropControl)->Void = { (sender) in
+        let didBegin: (MPCropControl)->Void = { [unowned self] (sender) in
             
             self.setGridMode(gridMode: .Major, isAnimate: true)
             
@@ -188,7 +188,7 @@ class MPCropAreaView: UIControl {
             }
         }
         
-        let didEnd: (MPCropControl)->Void = { (sender) in
+        let didEnd: (MPCropControl)->Void = { [unowned self] (sender) in
             
             self.setGridMode(gridMode: .None, isAnimate: true)
             
@@ -220,7 +220,7 @@ class MPCropAreaView: UIControl {
             }
         }
         
-        let didResize: (MPCropControl, CGPoint)->Void = { (cropControl, translation) in
+        let didResize: (MPCropControl, CGPoint)->Void = { [unowned self] (cropControl, translation) in
             self.handleResizeWithSender(sender: cropControl, translation: translation)
 
             if let areaDidChange = self.areaDidChange {
@@ -392,10 +392,20 @@ class MPCropAreaView: UIControl {
     public func lockAspectRatio(ratio: CGFloat) {
         isLockAspectRatio = true
         aspectRatio = ratio
+        
+        setHighLightEdge(toHidden: false)
     }
     
     public func unlockAspectRatio() {
         isLockAspectRatio = false
+        setHighLightEdge(toHidden: true)
+    }
+    
+    private func setHighLightEdge(toHidden isHidden:Bool) {
+        self.topEdgeHighLight.isHidden = isHidden
+        self.leftEdgeHighLight.isHidden = isHidden
+        self.bottomEdgeHighLight.isHidden = isHidden
+        self.rightEdgeHighLight.isHidden = isHidden
     }
     
     // MARK: overide method

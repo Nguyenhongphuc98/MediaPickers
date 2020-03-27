@@ -13,6 +13,7 @@
 		A95062D824060F98007C0147 /* MPAssetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A95062D724060F98007C0147 /* MPAssetCollection.swift */; };
 		A9515203240F9B3B008B678D /* MPCropAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9515202240F9B3B008B678D /* MPCropAreaView.swift */; };
 		A9515205240F9C40008B678D /* MPCropControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9515204240F9C40008B678D /* MPCropControl.swift */; };
+		A952A385242C6A760081BCD2 /* CGImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A952A384242C6A760081BCD2 /* CGImageExtensions.swift */; };
 		A9535C3B2419D62F00AFDAF9 /* MPCropScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9535C3A2419D62F00AFDAF9 /* MPCropScrollView.swift */; };
 		A953BE2F2404D38B005A8F2D /* FetchOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = A953BE2E2404D38B005A8F2D /* FetchOption.swift */; };
 		A953BE56240527EB005A8F2D /* PickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A953BE55240527EB005A8F2D /* PickerCollectionView.swift */; };
@@ -44,6 +45,7 @@
 		A95062D724060F98007C0147 /* MPAssetCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPAssetCollection.swift; sourceTree = "<group>"; };
 		A9515202240F9B3B008B678D /* MPCropAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropAreaView.swift; sourceTree = "<group>"; };
 		A9515204240F9C40008B678D /* MPCropControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropControl.swift; sourceTree = "<group>"; };
+		A952A384242C6A760081BCD2 /* CGImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGImageExtensions.swift; sourceTree = "<group>"; };
 		A9535C3A2419D62F00AFDAF9 /* MPCropScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCropScrollView.swift; sourceTree = "<group>"; };
 		A953BE2E2404D38B005A8F2D /* FetchOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchOption.swift; sourceTree = "<group>"; };
 		A953BE55240527EB005A8F2D /* PickerCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerCollectionView.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				A94F7A362418FCD700F7940E /* MPCropView.swift */,
 				A9535C3A2419D62F00AFDAF9 /* MPCropScrollView.swift */,
 				A94EE2C7241B342600F74007 /* MPCropContentView.swift */,
+				A952A384242C6A760081BCD2 /* CGImageExtensions.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				A9596C84240CBA590011F36F /* CollectAssetCell.swift in Sources */,
 				A953BE6324053361005A8F2D /* PickerViewController.swift in Sources */,
 				A94F7A372418FCD700F7940E /* MPCropView.swift in Sources */,
+				A952A385242C6A760081BCD2 /* CGImageExtensions.swift in Sources */,
 				A9515203240F9B3B008B678D /* MPCropAreaView.swift in Sources */,
 				A953BE56240527EB005A8F2D /* PickerCollectionView.swift in Sources */,
 				A9860DE02403D16B0031335D /* MPPhotoLib.swift in Sources */,

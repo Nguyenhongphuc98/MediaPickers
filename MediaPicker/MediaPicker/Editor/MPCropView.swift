@@ -79,7 +79,7 @@ class MPCropView: UIControl {
     private func setUpUI() {
         backgroundColor = .white
         cropRect = CGRect(x: 0, y: 0, width: originSize.width, height: originSize.height)
-        let overlayColor = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 1)
+        let overlayColor: UIColor = .black
         
         //tinh toan vung bounds cho crop area
         maximumCanvasSize = frame.inset(by: canvasInsets).size
@@ -96,32 +96,31 @@ class MPCropView: UIControl {
         scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         scrollView.setImage(image: image)
         addSubview(scrollView)
-        
+
         topOverlayView = UIView(frame: CGRect.zero)
         topOverlayView.backgroundColor = overlayColor
-        
+
         leftOverlayView = UIView(frame: CGRect.zero)
         leftOverlayView.backgroundColor = overlayColor
-        
+
         bottomOverlayView = UIView(frame: CGRect.zero)
         bottomOverlayView.backgroundColor = overlayColor
-        
+
         rightOverlayView = UIView(frame: CGRect.zero)
         rightOverlayView.backgroundColor = overlayColor
-        
+
         overlayWrapperView = UIView(frame: scrollView.frame)
         overlayWrapperView.isUserInteractionEnabled = false
-        //overlayWrapperView.alpha = 0.45
         overlayWrapperView.addSubview(topOverlayView)
         overlayWrapperView.addSubview(leftOverlayView)
         overlayWrapperView.addSubview(rightOverlayView)
         overlayWrapperView.addSubview(bottomOverlayView)
         addSubview(overlayWrapperView)
-        
+
         areaView = MPCropAreaView(frame: scrollView.frame)
         addSubview(areaView)
         layoutOverlayView()
-        
+
         //rotation
         rotationView = MPCropRotationView(frame: CGRect(x: frame.width / 2 - originSize.width / 2, y: scrollView.frame.origin.y + scrollView.frame.size.height, width: originSize.width, height: MPCropRotationHeight))
         addSubview(rotationView)
@@ -129,30 +128,30 @@ class MPCropView: UIControl {
     
     private func setUpAction() {
         
-        areaView.areaDidBeginEditing = {
+        areaView.areaDidBeginEditing = { [unowned self] in
             self.handleAreaDidBeginEditting()
         }
-        areaView.areaDidChange = {
+        areaView.areaDidChange = { [unowned self] in
             self.handleAreaDidchange()
         }
-        areaView.areaDidEndEditing = {
+        areaView.areaDidEndEditing = { [unowned self] in
             self.handleCropAreaDidEndEditting()
         }
         
-        rotationView.angleDidBeginChanging = {
+        rotationView.angleDidBeginChanging = { [unowned self] in
             self.handleAngleDidBeginChanging()
         }
-        rotationView.angleDidChange = { angle in
+        rotationView.angleDidChange = { [unowned self] angle in
             self.setRotation(rotation: angle)
         }
-        rotationView.angleDidEndChanging = {
+        rotationView.angleDidEndChanging = { [unowned self] in
             self.handleAngleDidEndChanging()
         }
         
-        scrollView.contentWillBeZooming = {
+        scrollView.contentWillBeZooming = { [unowned self] in
             self.hideOverlayView(isHiden: false, animate: true)
         }
-        scrollView.contentDidEndZooming = {
+        scrollView.contentDidEndZooming = { [unowned self] in
             self.zoomed = true
             self.hideOverlayView(isHiden: true, animate: true)
         }
@@ -194,7 +193,6 @@ class MPCropView: UIControl {
         let cropFrame = self.areaView.frame
         
         let topInset = cropFrame.origin.y <  canvasInsets.top ? canvasInsets.top - cropFrame.origin.y : 0
-
         let leftInset = cropFrame.origin.x < canvasInsets.left ? canvasInsets.left - cropFrame.origin.x : 0
 
         let bottomOfCropRect = cropFrame.origin.y + cropFrame.size.height
@@ -245,9 +243,9 @@ class MPCropView: UIControl {
         let newAreaBounds = CGRect(x: .zero, y: .zero, width: newWidth, height: newHeight)
         
         //tinh bound moi cua scrollview - vi no co the dang xoay r-radians
-        let positiveAgle = abs(rotation)
-        let newScrollViewBoundWidth = sin(positiveAgle) * newHeight + cos(positiveAgle) * newWidth
-        let newScrollViewBoundHeight = cos(positiveAgle) * newHeight + sin(positiveAgle) * newWidth
+        let positiveAngle = abs(rotation)
+        let newScrollViewBoundWidth = sin(positiveAngle) * newHeight + cos(positiveAngle) * newWidth
+        let newScrollViewBoundHeight = cos(positiveAngle) * newHeight + sin(positiveAngle) * newWidth
         
         let scrollViewBound = CGRect(x: .zero, y: .zero, width: newScrollViewBoundWidth, height: newScrollViewBoundHeight)
         
@@ -308,13 +306,14 @@ class MPCropView: UIControl {
         self.scrollView.bounds = CGRect(x: .zero, y: .zero, width: newScrollViewBoundWidth, height: newScrollViewBoundHeight)
         
         //calculate offset
-        self.scrollView.center = canvasCenter
+        //self.scrollView.center = canvasCenter
         
         //scale if needed
         let isContentNotFit = self.scrollView.contentSize.width / self.scrollView.bounds.size.width <= 1 || self.scrollView.contentSize.height / self.scrollView.bounds.size.height <= 1
         
         if isContentNotFit || !zoomed {
             self.scrollView.scaleToBounds()
+            self.zoomed = false
         }
     }
     
@@ -327,6 +326,7 @@ class MPCropView: UIControl {
     public func resetToOrigin() {
         
         rotation = .zero
+        zoomed = false
         
         UIView.animate(withDuration: 0.3) {
             self.scrollView.resetScale()
@@ -403,5 +403,48 @@ class MPCropView: UIControl {
     public func unlockCropArea() {
         isLookedAspectRatio = false
         areaView.unlockAspectRatio()
+    }
+    
+    public func cropImageForCurentState() -> UIImage {
+        
+//        let rect = scrollView.contentView.convert(scrollView.contentView.bounds, to: self)
+//        let contentCenter = CGPoint(x: rect.midX, y: rect.midY)
+//
+//        var transform: CGAffineTransform = .identity
+//        transform = transform.translatedBy(x: contentCenter.x - canvasCenter.x,
+//                                           y: contentCenter.y - canvasCenter.y)
+//        transform = transform.rotated(by: rotation)
+//        //transform = transform.scaledBy(x: scrollView.zoomScale, y: scrollView.zoomScale)
+//
+//        let startPoint = areaView.convert(frame, to: scrollView.contentView).origin
+//
+//        let cgImage = self.image.cgImage?.transformedImage(transform,
+//                                             imageOriginSize: image.size,
+//                                             cropSize: areaView.bounds.size,
+//                                             imageAdjustedSize: scrollView.contentSize,
+//                                             zoomScale: scrollView.zoomScale,
+//                                             translation: startPoint)
+        
+        let rect = scrollView.contentView.convert(scrollView.contentView.bounds, to: self)
+        let cropPoint = areaView.frame.origin
+        
+        var transform: CGAffineTransform = .identity
+//        transform = transform.translatedBy(x: rect.origin.x - cropPoint.x,
+//                                           y: rect.origin.y - cropPoint.y)
+        transform = transform.rotated(by: rotation)
+        //transform = transform.scaledBy(x: scrollView.zoomScale, y: scrollView.zoomScale)
+        
+        let trans = CGPoint(x: rect.origin.x - cropPoint.x, y: rect.origin.y - cropPoint.y)
+        
+        let cgImage = self.image.cgImage?.transformedImage(transform,
+                                             imageOriginSize: image.size,
+                                             cropSize: areaView.bounds.size,
+                                             imageAdjustedSize: scrollView.contentSize,
+                                             zoomScale: scrollView.zoomScale,
+                                             translation: trans,
+        angle: rotation)
+        
+        return UIImage(cgImage: cgImage!)
+        
     }
 }

@@ -12,42 +12,24 @@ import ReactiveSwift
 
 class CropViewController: UIViewController {
     
-    var asset: PHAsset!
-    
-    var cropRotationView: MPCropRotationView!
-    
-    var cropAreaView: MPCropAreaView!
-    
     var cropView: MPCropView!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setUpUI()
+    
+    init(image: UIImage) {
+        super.init(nibName: nil, bundle: nil)
         
-        //temp
+        let canvasInset = UIEdgeInsets(top: 100, left: 30, bottom: 100, right: 30)
+        self.cropView = MPCropView(frame: self.view.bounds, insets: canvasInset, image: image)
+        self.view.addSubview(self.cropView)
+
         actionButton()
     }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
     
-    func setUpUI() {
-        
-        view.backgroundColor = .black
- 
-        MPPhotoLib.sharedInstance
-            .fullResolutionImageDataFor(asset: asset)
-            .observe(on: UIScheduler())
-            .start(Signal<UIImage?, Never>.Observer(value: { (image) in
-                //imageView.image = image
-                if let i = image {
-                    let canvasInset = UIEdgeInsets(top: 100, left: 30, bottom: 100, right: 30)
-                    self.cropView = MPCropView(frame: self.view.bounds, insets: canvasInset, image: i)
-                    self.view.addSubview(self.cropView)
-                }
-                
-            }, completed: {
-                print("complete")
-            }))
-        
+    override func viewWillDisappear(_ animated: Bool) {
+        cropView.isHidden = true
     }
 
     func actionButton() {
@@ -86,10 +68,32 @@ class CropViewController: UIViewController {
         aspectButton.clipsToBounds = true
         aspectButton.addTarget(self, action: #selector(aspectButtonDidClick), for: .touchUpInside)
         
+        let cropButton = UIButton()
+        cropButton.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        cropButton.setTitle("Crop", for: .normal)
+        cropButton.layer.cornerRadius = 5
+        cropButton.clipsToBounds = true
+        cropButton.addTarget(self, action: #selector(cropButtonDidClick), for: .touchUpInside)
+        
         actionBar.addArrangedSubview(resetButton)
         actionBar.addArrangedSubview(mirrorButton)
         actionBar.addArrangedSubview(rLeftButton)
         actionBar.addArrangedSubview(aspectButton)
+        actionBar.addArrangedSubview(cropButton)
+        
+        
+        vc.view.backgroundColor = .green
+        uiView.frame = vc.view.frame.insetBy(dx: 30, dy: 30)
+        uiView.contentMode = .scaleAspectFit
+        uiView.center = vc.view.center
+        
+        let closeButton = UIButton(frame: CGRect(x: 0, y: 0, width: vc.view.frame.width, height: 40))
+        closeButton.setTitle("Close", for: .normal)
+        closeButton.backgroundColor = .systemPink
+        closeButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+        
+        vc.view.addSubview(uiView)
+        vc.view.addSubview(closeButton)
     }
     
     @objc func resetButtonDidClick() {
@@ -129,5 +133,21 @@ class CropViewController: UIViewController {
     
     @objc func rLeftButtonDidClick() {
         cropView.reotateLeft90Degrees(withAnimate: true)
+    }
+    
+    let vc = UIViewController()
+    let uiView = UIImageView()
+    @objc func cropButtonDidClick() {
+        
+        let image = cropView.cropImageForCurentState()
+        uiView.image = image
+        
+        present(vc, animated: true) {
+        }
+        
+    }
+    
+    @objc func dismissVC() {
+        vc.dismiss(animated: true) {  }
     }
 }

@@ -30,6 +30,10 @@ class MPCropScrollView: UIView {
         scrollview.contentSize
     }
     
+    var zoomScale: CGFloat {
+        scrollview.zoomScale
+    }
+    
     var contentWillBeZooming: (()->Void)?
     
     var contentDidEndZooming: (()->Void)?
